@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: rws
+          uri: http://localhost:8100/
+          predicates:
+            - Path=/rws/**
+          filters:
+            - RewritePath=/rws(?<segment>/?.*), /api/v1/$\{segment}
+            #- SetPath=/api/v1/**
+            #- StripPrefix=1
+            - AddRequestHeader=X-IBM-Client-Id, devKey
+            - AddRequestHeader=X-IBM-Client-Secret, Secret
+        - id: second-microservice
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/second/**
