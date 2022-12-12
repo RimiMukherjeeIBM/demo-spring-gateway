@@ -15,9 +15,11 @@ spring:
             - RewritePath=/rws(?<segment>/?.*), /api/v1/$\{segment}
             #- SetPath=/api/v1/**
             #- StripPrefix=1
-            - AddRequestHeader=X-IBM-Client-Id, devKey
-            - AddRequestHeader=X-IBM-Client-Secret, Secret
-        - id: second-microservice
-          uri: http://localhost:8082/
+            #- AddRequestHeader=X-IBM-Client-Id, devKey
+            #- AddRequestHeader=X-IBM-Client-Secret, Secret
+        - id: astro
+          uri: http://localhost:8200/
           predicates:
-            - Path=/second/**
+            - Path=/astro/**
+          filters:
+            - RewritePath=/astro(?<segment>/?.*), /api/v1$\{segment}
